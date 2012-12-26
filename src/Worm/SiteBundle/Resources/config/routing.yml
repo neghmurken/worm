@@ -1,0 +1,5 @@
+wormsite_home_index:
+    pattern: /
+    defaults: { _controller: WormSiteBundle:Home:index }
+    requirements:
+        _method: GET

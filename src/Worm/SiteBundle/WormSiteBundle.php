@@ -1,9 +1,9 @@
 <?php
 
-namespace Acme\DemoBundle;
+namespace Worm\SiteBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class AcmeDemoBundle extends Bundle
+class WormSiteBundle extends Bundle
 {
 }
