@@ -11,6 +11,7 @@ class HomeController extends Controller
 
     public function indexAction(Request $request)
     {
+
         return $this->render(
             'WormSiteBundle:Home:index.html.twig'
         );

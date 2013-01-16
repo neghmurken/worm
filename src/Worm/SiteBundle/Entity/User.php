@@ -19,14 +19,44 @@ class User extends FOSUser
      */
     protected $id;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $position;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Submission", mappedBy="author")
+     */
+    protected $submissions;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
+
         return $this->id;
     }
+
+    /**
+     * @param $position
+     */
+    public function setPosition($position)
+    {
+
+        $this->position = $position;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPosition()
+    {
+
+        return $this->position;
+    }
+
+
 }

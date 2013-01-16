@@ -26,8 +26,8 @@ twig:
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"
-    use_controller: false
-    bundles:        [ ]
+    use_controller: true
+    bundles:        [WormSiteBundle]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -63,3 +63,8 @@ fos_user:
     db_driver: orm
     user_class: Worm\SiteBundle\Entity\User
     firewall_name: main
+
+worm_site:
+    queue:
+        root_path: %queue_root_path%
+        delay: +1 Week

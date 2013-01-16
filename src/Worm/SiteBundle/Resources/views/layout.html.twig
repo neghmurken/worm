@@ -1,1 +1,45 @@
 {% extends '::base.html.twig' %}
+
+{% block title %}Worm{% endblock %}
+
+    {% block stylesheets %}
+        {% stylesheets filter='cssrewrite'
+        'bundles/wormsite/bootstrap/css/bootstrap.min.css'
+        'bundles/wormsite/bootstrap/css/bootstrap-responsive.min.css'
+        'bundles/wormsite/css/*' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+    {% endblock %}
+
+    {% block javascripts %}
+        {% javascripts
+        'bundles/wormsite/js/vendors/jquery.min.js'
+        'bundles/wormsite/bootstrap/js/bootstrap.min.js'
+        'bundles/wormsite/js/worm.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endblock %}
+
+    {% block body %}
+        <header class="navbar navbar-inverse">
+            <div class="navbar-inner">
+                <a class="brand" href="#">{{ block('title') }}</a>
+                <ul class="nav">
+                    <li><a href="{{ path('wormsite_home_index') }}">Accueil</a></li>
+                </ul>
+
+                <ul class="nav pull-right">
+                    <li><a href="{{ path('fos_user_security_login') }}">Se connecter</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="container">
+            {% block container %}
+            {% endblock %}
+        </div>
+
+        <footer>
+
+        </footer>
+    {% endblock %}

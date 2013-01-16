@@ -1,5 +1,5 @@
 {
-    "hash": "82dcc04429dfaa02d01ee278411ad579",
+    "hash": "06e11c2c0eeb4376ef56a25080fc0f16",
     "packages": [
         {
             "name": "doctrine/common",
@@ -265,12 +265,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/migrations",
-                "reference": "c1d875ce7d092dd1bc7508c3867b5c6b97431e43"
+                "reference": "6e916d8e39b4963d6fd52622fd9ac797dce82837"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/doctrine/migrations/archive/c1d875ce7d092dd1bc7508c3867b5c6b97431e43.zip",
-                "reference": "c1d875ce7d092dd1bc7508c3867b5c6b97431e43",
+                "url": "https://github.com/doctrine/migrations/archive/6e916d8e39b4963d6fd52622fd9ac797dce82837.zip",
+                "reference": "6e916d8e39b4963d6fd52622fd9ac797dce82837",
                 "shasum": ""
             },
             "require": {
@@ -284,7 +284,7 @@
             "suggest": {
                 "symfony/console": "to run the migration from the console"
             },
-            "time": "2012-10-19 10:37:24",
+            "time": "2012-12-26 14:01:23",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -392,12 +392,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle",
-                "reference": "618b95d373f67c075a0d6f61339066bb061a0b71"
+                "reference": "8a129b88ab18b9b2d1518ac40937ecfafd4aac53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/FriendsOfSymfony/FOSUserBundle/archive/618b95d373f67c075a0d6f61339066bb061a0b71.zip",
-                "reference": "618b95d373f67c075a0d6f61339066bb061a0b71",
+                "url": "https://github.com/FriendsOfSymfony/FOSUserBundle/archive/8a129b88ab18b9b2d1518ac40937ecfafd4aac53.zip",
+                "reference": "8a129b88ab18b9b2d1518ac40937ecfafd4aac53",
                 "shasum": ""
             },
             "require": {
@@ -418,7 +418,7 @@
                 "doctrine/doctrine-bundle": "*",
                 "doctrine/mongodb-odm-bundle": "*"
             },
-            "time": "2012-12-22 15:52:39",
+            "time": "2012-12-24 14:53:00",
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
@@ -782,6 +782,43 @@
                 "compression",
                 "minification"
             ]
+        },
+        {
+            "name": "leafo/lessphp",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "http://github.com/leafo/lessphp",
+                "reference": "da15f54506ce5023eaeb9ad9cae83470ffe018a1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/leafo/lessphp/archive/da15f54506ce5023eaeb9ad9cae83470ffe018a1.zip",
+                "reference": "da15f54506ce5023eaeb9ad9cae83470ffe018a1",
+                "shasum": ""
+            },
+            "time": "2012-11-03 17:50:34",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "classmap": [
+                    "lessc.inc.php"
+                ]
+            },
+            "notification-url": "http://packagist.org/downloads/",
+            "license": [
+                "MIT",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Leaf Corcoran",
+                    "email": "leafot@gmail.com",
+                    "homepage": "http://leafo.net"
+                }
+            ],
+            "description": "lessphp is a compiler for LESS written in PHP.",
+            "homepage": "http://leafo.net/lessphp/"
         },
         {
             "name": "monolog/monolog",
@@ -1407,6 +1444,7 @@
         "doctrine/migrations": 20,
         "doctrine/doctrine-migrations-bundle": 20,
         "twig/extensions": 20,
+        "leafo/lessphp": 20,
         "kriswallsmith/assetic": 20,
         "friendsofsymfony/user-bundle": 20
     }
