@@ -6,4 +6,3 @@ services:
         arguments:
             - %worm_site.queue.root_path%
             - @doctrine.orm.entity_manager
-            - @event_dispatcher

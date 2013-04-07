@@ -4,7 +4,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: "%locale%" }
+    translator:      { fallback: "%locale%" }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -66,5 +66,5 @@ fos_user:
 
 worm_site:
     queue:
-        root_path: %queue_root_path%
+        root_path: %kernel.root_dir%/data/queue
         delay: +1 Week

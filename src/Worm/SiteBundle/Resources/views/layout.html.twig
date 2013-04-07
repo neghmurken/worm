@@ -29,7 +29,27 @@
                 </ul>
 
                 <ul class="nav pull-right">
-                    <li><a href="{{ path('fos_user_security_login') }}">Se connecter</a></li>
+                    {% if is_granted('ROLE_USER') %}
+                        <li class="dropdown" id="account-menu">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#account-menu">
+                                <i class="icon-user icon-white"></i>&nbsp;{{ app.user.username }}&nbsp;<b class="caret"></b>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('fos_user_security_logout') }}">Se déconnecter</a></li>
+                            </ul>
+                        </li>
+                        {% else %}
+                        <li class="dropdown" id="login-form">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#login-form">
+                                Se connecter&nbsp;<b class="caret"></b>
+                            </a>
+
+                            <div class="dropdown-menu">
+                                {% render 'WormSiteBundle:Security:login' %}
+                            </div>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </header>
