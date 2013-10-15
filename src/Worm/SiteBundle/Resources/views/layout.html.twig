@@ -46,7 +46,7 @@
                             </a>
 
                             <div class="dropdown-menu">
-                                {% render 'WormSiteBundle:Security:login' %}
+                                {{ render(controller('WormSiteBundle:Security:login')) }}
                             </div>
                         </li>
                     {% endif %}

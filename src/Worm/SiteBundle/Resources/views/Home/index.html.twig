@@ -1,2 +1,7 @@
 {% extends 'WormSiteBundle::layout.html.twig' %}
 
+{% block container %}
+
+    {{ render(controller('WormSiteBundle:Submission:worm')) }}
+
+{% endblock %}

@@ -3,6 +3,7 @@
 namespace Worm\SiteBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 
 /**
  * SubmissionRepository
@@ -12,4 +13,31 @@ use Doctrine\ORM\EntityRepository;
  */
 class SubmissionRepository extends EntityRepository
 {
+
+    /**
+     * @param $alias
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getBaseQueryBuilder($alias)
+    {
+        return $this
+            ->createQueryBuilder($alias)
+            ->leftJoin(sprintf('%s.author', $alias), sprintf('%s_u', $alias))
+            ->addOrderBy(sprintf('%s.submittedAt', $alias), 'ASC');
+    }
+
+    /**
+     * @return array|null
+     */
+    public function retrieveAll()
+    {
+        try {
+            return $this
+                ->getBaseQueryBuilder('s')
+                ->getQuery()
+                ->getResult();
+        } catch (NoResultException $e) {
+            return null;
+        }
+    }
 }

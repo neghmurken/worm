@@ -40,6 +40,19 @@ class Submission
     protected $size;
 
     /**
+     * @ORM\Column(type="datetime", name="submitted_at")
+     */
+    protected $submittedAt;
+
+    /**
+     *
+     */
+    public function __construct()
+    {
+        $this->submittedAt = new \DateTime();
+    }
+
+    /**
      * @param $author
      */
     public function setAuthor($author)
@@ -120,5 +133,14 @@ class Submission
         return $this->size;
     }
 
-
+    /**
+     * @return string
+     */
+    public function getFilename()
+    {
+        return sprintf('%s.%s',
+            $this->getHash(),
+            $this->getExtension()
+        );
+    }
 }

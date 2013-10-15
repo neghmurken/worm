@@ -1,0 +1,17 @@
+{% if submissions and submissions|length > 0 %}
+    {% for submission in submissions %}
+        <div class="submission" data-id="{{ submission.id }}">
+            <figure>
+                <img src="{{ asset('uploads/' ~ submission.filename) }}" alt="#{{ submission.id }} par {{ submission.author.username }}"/>
+                <figcaption>
+                    <p>#{{ submission.id }} par {{ submission.author.username }} le {{ submission.submittedAt|date('d/m/Y H:i') }}</p>
+                </figcaption>
+            </figure>
+        </div>
+    {% endfor %}
+    {% if not queue.empty %}
+        <div class="submission queue">
+            <p>{{ queue.current.username }}</p>
+        </div>
+    {% endif %}
+{% endif %}
