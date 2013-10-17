@@ -1,7 +1,3 @@
-body {
-    background-color: #222222;
-}
-
 header .navbar-inner {
     border-radius: 0;
     -moz-border-radius: 0;
@@ -14,4 +10,9 @@ header .navbar-inner {
 
 #login-form form {
     margin: 10px;
+}
+
+.alert ul {
+    margin: 0;
+    list-style-type: none;
 }

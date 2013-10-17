@@ -2,64 +2,33 @@
 
 {% block title %}Worm{% endblock %}
 
-    {% block stylesheets %}
-        {% stylesheets filter='cssrewrite'
-        'bundles/wormsite/bootstrap/css/bootstrap.min.css'
-        'bundles/wormsite/bootstrap/css/bootstrap-responsive.min.css'
-        'bundles/wormsite/css/*' %}
-        <link rel="stylesheet" type="text/css" href="{{ asset_url }}"/>
-        {% endstylesheets %}
-    {% endblock %}
+{% block stylesheets %}
+    {% stylesheets filter='cssrewrite'
+    'bundles/wormsite/bootstrap/css/bootstrap.min.css'
+    'bundles/wormsite/bootstrap/css/bootstrap-responsive.min.css'
+    'bundles/wormsite/css/*' %}
+    <link rel="stylesheet" type="text/css" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
 
-    {% block javascripts %}
-        {% javascripts
-        'bundles/wormsite/js/vendors/jquery.min.js'
-        'bundles/wormsite/bootstrap/js/bootstrap.min.js'
-        'bundles/wormsite/js/worm.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-    {% endblock %}
+{% block javascripts %}
+    {% javascripts
+    'bundles/wormsite/js/vendors/jquery.min.js'
+    'bundles/wormsite/bootstrap/js/bootstrap.min.js'
+    'bundles/wormsite/js/worm.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
 
-    {% block body %}
-        <header class="navbar navbar-inverse">
-            <div class="navbar-inner">
-                <a class="brand" href="#">{{ block('title') }}</a>
-                <ul class="nav">
-                    <li><a href="{{ path('wormsite_home_index') }}">Accueil</a></li>
-                </ul>
+{% block body %}
+    {% include 'WormSiteBundle:Snippets:_navbar.html.twig' with {'title': block('title')} %}
 
-                <ul class="nav pull-right">
-                    {% if is_granted('ROLE_USER') %}
-                        <li class="dropdown" id="account-menu">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#account-menu">
-                                <i class="icon-user icon-white"></i>&nbsp;{{ app.user.username }}&nbsp;<b class="caret"></b>
-                            </a>
+    <div class="container">
+        {% block container %}
+        {% endblock %}
+    </div>
 
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ path('fos_user_security_logout') }}">Se déconnecter</a></li>
-                            </ul>
-                        </li>
-                        {% else %}
-                        <li class="dropdown" id="login-form">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#login-form">
-                                Se connecter&nbsp;<b class="caret"></b>
-                            </a>
+    <footer>
 
-                            <div class="dropdown-menu">
-                                {{ render(controller('WormSiteBundle:Security:login')) }}
-                            </div>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </header>
-
-        <div class="container">
-            {% block container %}
-            {% endblock %}
-        </div>
-
-        <footer>
-
-        </footer>
-    {% endblock %}
+    </footer>
+{% endblock %}

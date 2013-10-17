@@ -1,0 +1,36 @@
+<header class="navbar">
+    <div class="navbar-inner">
+        <a class="brand" href="{{ path('wormsite_home_index') }}">{{ title }}</a>
+
+        <ul class="nav pull-right">
+            {% if is_granted('ROLE_USER') %}
+                <li class="dropdown" id="account-menu">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#account-menu">
+                        <i class="icon-user"></i>&nbsp;{{ app.user.username }}&nbsp;<b class="caret"></b>
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="{{ path('fos_user_security_logout') }}">
+                                <i class="icon-off"></i>&nbsp;Se déconnecter
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{{ path('fos_user_registration_register') }}">S'inscrire</a>
+                </li>
+                <li class="dropdown" id="login-form">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#login-form">
+                        Se connecter&nbsp;<b class="caret"></b>
+                    </a>
+
+                    <div class="dropdown-menu">
+                        {{ render(controller('WormSiteBundle:Security:login')) }}
+                    </div>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</header>
