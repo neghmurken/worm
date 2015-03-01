@@ -45,6 +45,13 @@ class Submission
     protected $submittedAt;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Worm", inversedBy="submissions")
+     * @ORM\JoinColumn(name="worm_id", referencedColumnName="id", onDelete="CASCADE")
+     * @var
+     */
+    protected $worm;
+
+    /**
      *
      */
     public function __construct()
@@ -142,5 +149,34 @@ class Submission
             $this->getHash(),
             $this->getExtension()
         );
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getSubmittedAt()
+    {
+        return $this->submittedAt;
+    }
+
+    /**
+     * @param Worm $worm
+     * @return $this
+     */
+    public function setWorm(Worm $worm = null)
+    {
+        $this->worm = $worm;
+
+        return $this;
+    }
+
+    /**
+     * Get worm
+     *
+     * @return \Worm\SiteBundle\Entity\Worm
+     */
+    public function getWorm()
+    {
+        return $this->worm;
     }
 }

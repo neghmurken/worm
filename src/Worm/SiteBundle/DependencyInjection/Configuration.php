@@ -17,24 +17,6 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode    = $treeBuilder->root('worm_site');
 
-        $rootNode
-            ->children()
-                ->arrayNode('queue')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('root_path')
-                            ->isRequired()
-                            ->cannotBeEmpty()
-                        ->end()
-                        ->scalarNode('delay')
-                            ->isRequired()
-                            ->defaultValue('+1 Week')
-                        ->end()
-                    ->end()
-                ->end()
-            ->end()
-        ;
-
         return $treeBuilder;
     }
 }

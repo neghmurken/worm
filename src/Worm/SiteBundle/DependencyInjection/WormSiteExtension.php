@@ -19,9 +19,6 @@ class WormSiteExtension extends Extension
         $configuration = new Configuration();
         $config        = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('worm_site.queue.root_path', $config['queue']['root_path']);
-        $container->setParameter('worm_site.queue.delay', $config['queue']['delay']);
-
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
     }

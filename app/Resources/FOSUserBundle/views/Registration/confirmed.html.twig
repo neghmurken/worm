@@ -1,0 +1,19 @@
+{% extends 'WormSiteBundle::layout.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block container %}
+    <div class="row-fluid">
+        <div class="span6 offset3">
+            <p class="well">
+                {{ 'registration.confirmed'|trans({'%username%': user.username}) }}
+                {% if app.session is not empty %}
+                    {% set targetUrl = app.session.get('_security.' ~ app.security.token.providerKey ~ '.target_path') %}
+                    {% if targetUrl is not empty %}
+                        <a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a>
+                    {% endif %}
+                {% endif %}
+            </p>
+        </div>
+    </div>
+{% endblock container %}
