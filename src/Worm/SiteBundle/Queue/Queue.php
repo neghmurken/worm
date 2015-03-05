@@ -22,7 +22,7 @@ class Queue
      */
     public function __construct(Worm $worm)
     {
-        $this->worm;
+        $this->worm = $worm;
     }
 
     /**

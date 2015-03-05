@@ -1,0 +1,38 @@
+wormsite_worm_list:
+    pattern: /
+    defaults: { _controller: WormSiteBundle:Worm:list }
+    requirements:
+        _method: GET
+
+wormsite_worm_view:
+    pattern: /{id}
+    defaults: { _controller: WormSiteBundle:Worm:view }
+    requirements:
+        _method: GET
+        id: \d+
+
+wormsite_worm_new:
+    pattern: /new
+    defaults: { _controller: WormSiteBundle:Worm:new }
+    requirements:
+        _method: GET
+
+wormsite_worm_create:
+    pattern: /new
+    defaults: { _controller: WormSiteBundle:Worm:create }
+    requirements:
+        _method: POST
+
+wormsite_worm_edit:
+    pattern: /{id}/edit
+    defaults: { _controller: WormSiteBundle:Worm:edit }
+    requirements:
+        _method: GET
+        id: \d+
+
+wormsite_worm_update:
+    pattern: /{id}/edit
+    defaults: { _controller: WormSiteBundle:Worm:update }
+    requirements:
+        _method: POST
+        id: \d+

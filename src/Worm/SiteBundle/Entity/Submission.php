@@ -40,6 +40,16 @@ class Submission
     protected $size;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    protected $width;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $height;
+
+    /**
      * @ORM\Column(type="datetime", name="submitted_at")
      */
     protected $submittedAt;
@@ -179,4 +189,38 @@ class Submission
     {
         return $this->worm;
     }
+
+    /**
+     * @param mixed $height
+     */
+    public function setHeight($height)
+    {
+        $this->height = $height;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHeight()
+    {
+        return $this->height;
+    }
+
+    /**
+     * @param mixed $width
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+
 }

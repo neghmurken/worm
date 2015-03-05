@@ -20,6 +20,34 @@ class Worm
     const MODE_VERTICAL = 2;
 
     /**
+     * @param bool $onlyKeys
+     * @return array
+     */
+    public static function getModes($onlyKeys = false)
+    {
+        $modes = array(
+            static::MODE_HORIZONTAL => 'Horizontal',
+            static::MODE_VERTICAL => 'Vertical'
+        );
+
+        return true === $onlyKeys ? array_keys($modes) : $modes;
+    }
+
+    /**
+     * @return Worm
+     */
+    public static function createDefault()
+    {
+        $worm = new static();
+        $worm->setMode(static::MODE_HORIZONTAL);
+        $worm->setWidth(640);
+        $worm->setHeight(360);
+        $worm->setTimeLimit(5 * 24 * 60);
+
+        return $worm;
+    }
+
+    /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -29,8 +57,8 @@ class Worm
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(max=255)
-     * @Assert\NotBlank
+     * @Assert\Length(max=255, maxMessage="Le titre ne doit pas excéder 255 caractères")
+     * @Assert\NotBlank(message="Vous devez définir un titre")
      * @var string
      */
     protected $name;
@@ -55,9 +83,36 @@ class Worm
     protected $mode;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Assert\Range(
+     *      min=10,
+     *      max=3200,
+     *      minMessage="La largeur doit être supérieure à 10px",
+     *      maxMessage="La largeur doit être inférieure à 3200px"
+     * )
+     */
+    protected $width;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Assert\Range(
+     *      min=10,
+     *      max=3200,
+     *      minMessage="La hauteur doit être supérieure à 10px",
+     *      maxMessage="La hauteur doit être inférieure à 3200px"
+     * )
+     */
+    protected $height;
+
+    /**
      * @ORM\Column(type="integer", name="time_limit")
      * @Assert\NotBlank
-     * @Assert\Range(min=30, max=43200)
+     * @Assert\Range(
+     *      min=30,
+     *      max=43200,
+     *      minMessage="Le temps limite doit être supérieur à 30 min (0.02 jours)",
+     *      maxMessage="La temps limite doit être inférieur à 30 jours"
+     * )
      * @var int
      */
     protected $timeLimit;
@@ -75,7 +130,7 @@ class Worm
     protected $submissions;
 
     /**
-     * @ORM\OneToMany(targetEntity="Subscription", mappedBy="worm")
+     * @ORM\OneToMany(targetEntity="Subscription", mappedBy="worm", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"position": "ASC"})
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
@@ -89,6 +144,7 @@ class Worm
         $this->submissions = new ArrayCollection();
         $this->subscriptions = new ArrayCollection();
         $this->createdAt = new \DateTime();
+        $this->mode = static::MODE_HORIZONTAL;
     }
 
     /**
@@ -168,6 +224,16 @@ class Worm
     public function getMode()
     {
         return $this->mode;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getModeAsString()
+    {
+        $modes = static::getModes();
+
+        return $modes[$this->getMode()];
     }
 
     /**
@@ -316,4 +382,38 @@ class Worm
     {
         return new Queue($this);
     }
+
+    /**
+     * @param mixed $height
+     */
+    public function setHeight($height)
+    {
+        $this->height = $height;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHeight()
+    {
+        return $this->height;
+    }
+
+    /**
+     * @param mixed $width
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+
 }
