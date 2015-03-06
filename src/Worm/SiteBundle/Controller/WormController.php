@@ -102,14 +102,78 @@ class WormController extends Controller
         );
     }
 
-    public function editAction()
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function editAction(Request $request)
     {
+        $id = $request->get('id');
 
+        if (!$id) {
+            throw $this->createNotFoundException('Worm identifier not provided');
+        }
+
+        $worm = $this->getRepository()->find($id);
+
+        if (!$worm) {
+            throw $this->createNotFoundException('Worm identifier (' . $id . ') is invalid');
+        }
+
+        return $this->render(
+            'WormSiteBundle:Worm:form.html.twig',
+            array(
+                'form' => $this->getForm($worm)->createView(),
+                'worm' => $worm
+            )
+        );
     }
 
-    public function updateAction()
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function updateAction(Request $request)
     {
+        $id = $request->get('id');
 
+        if (!$id) {
+            throw $this->createNotFoundException('Worm identifier not provided');
+        }
+
+        $worm = $this->getRepository()->find($id);
+
+        if (!$worm) {
+            throw $this->createNotFoundException('Worm identifier (' . $id . ') is invalid');
+        }
+
+        $form = $this->getForm($worm);
+
+        try {
+            $form->handleRequest($request);
+
+            if (!$form->isValid()) {
+                throw new Exception('Données invalides. Vérifier votre saisie');
+            }
+
+            $this->getEntityManager()->flush();
+
+            $this->get('session')->getFlashBag()->add('success', 'Vers modifié avec succès');
+
+            return $this->redirect($this->generateUrl('wormsite_worm_view', array('id' => $worm->getId())));
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+        }
+
+        return $this->render(
+            'WormSiteBundle:Worm:form.html.twig',
+            array(
+                'form' => $form->createView(),
+                'worm' => $worm
+            )
+        );
     }
 
 }

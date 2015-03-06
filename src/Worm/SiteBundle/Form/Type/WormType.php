@@ -17,8 +17,15 @@ class WormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $isNew = !$builder->getData()->getId();
+
         $builder->add('name', 'text', array(
             'label' => 'Titre',
+            'required' => false
+        ));
+
+        $builder->add('description', 'textarea', array(
+            'label' => 'Description',
             'required' => false
         ));
 
@@ -27,17 +34,20 @@ class WormType extends AbstractType
             'choices' => Worm::getModes(),
             'expanded' => true,
             'multiple' => false,
-            'required' => true
+            'required' => true,
+            'disabled' => !$isNew
         ));
 
         $builder->add('width', 'integer', array(
             'label' => 'Largeur',
-            'required' => false
+            'required' => false,
+            'disabled' => !$isNew && $builder->getData()->getMode() === Worm::MODE_VERTICAL
         ));
 
         $builder->add('height', 'integer', array(
             'label' => 'Hauteur',
-            'required' => false
+            'required' => false,
+            'disabled' => !$isNew && $builder->getData()->getMode() === Worm::MODE_HORIZONTAL
         ));
 
         $builder->add('uniqueQueue', 'checkbox', array(

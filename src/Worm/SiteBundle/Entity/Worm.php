@@ -64,6 +64,13 @@ class Worm
     protected $name;
 
     /**
+     * @ORM\Column(type="string", length=2000, nullable=true)
+     * @Assert\Length(max=2000, maxMessage="La description ne doit pas excéder 2000 caractères")
+     * @var string
+     */
+    protected $description;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="worms")
      * @ORM\JoinColumn(name="author_user_id", referencedColumnName="id", onDelete="SET NULL")
      * @var User
@@ -415,5 +422,20 @@ class Worm
         return $this->width;
     }
 
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
 }
