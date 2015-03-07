@@ -16,3 +16,45 @@ header .navbar-inner {
     margin: 0;
     list-style-type: none;
 }
+
+/** ----------------------------------------------------------------------------------------------------------------- */
+/** WORM
+/** */
+.worm-info {
+    background-color: #eee;
+    height: 32px;
+    line-height: 32px;
+    padding-right: 20px;
+    border-bottom: 1px solid #ddd;
+}
+.worm-info .action-list {
+    display: block;
+    float: left;
+    height: 100%;
+    width: 32px;
+    text-align: center;
+    border-right: 1px solid #ddd;
+    margin-right: 1em;
+}
+.worm-info .action-list:hover {
+    background-color: #e8e8e8;
+}
+.worm-info .action-edit {
+    float: right;
+    margin-top: 3px;
+}
+
+.container.horizontal {
+    margin: 0;
+    width: 100%;
+}
+.horizontal .worm {
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+.horizontal .worm figure {
+    display: inline-block;
+    margin: 0;
+}

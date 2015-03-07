@@ -21,9 +21,12 @@
 {% endblock %}
 
 {% block body %}
-    {% include 'WormSiteBundle:Snippets:_navbar.html.twig' with {'title': block('title')} %}
+    <header class="navbar">
+        {% include 'WormSiteBundle:Snippets:_navbar.html.twig' with {'title': block('title')} %}
+        {% block info %}{% endblock %}
+    </header>
 
-    <div class="container">
+    <div class="container {% block container_class %}{% endblock %}">
         {% block container %}
         {% endblock %}
     </div>

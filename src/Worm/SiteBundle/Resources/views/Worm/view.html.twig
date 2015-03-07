@@ -1,0 +1,55 @@
+{% extends 'WormSiteBundle::layout.html.twig' %}
+
+{% block info %}
+    <div class="worm-info">
+        <a href="{{ path('wormsite_worm_list') }}" class="action-list"><i class="icon-chevron-left"></i></a>
+        <strong>{{ worm.name }}</strong> - par {{ worm.author.username }} le {{ worm.createdAt|date('d/m/Y H:i') }}
+        - {{ worm.description }}
+        {% if worm.author == app.user %}
+            <a href="{{ path('wormsite_worm_edit', {'id': worm.id}) }}" class="btn btn-small action-edit">
+                <i class="icon-pencil"></i>
+                Modifier
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block container_class %}
+    {{- worm.mode == constant('Worm\\SiteBundle\\Entity\\Worm::MODE_HORIZONTAL') ? 'horizontal' : 'vertical' -}}
+{% endblock %}
+
+{% block container %}
+    <div class="worm">
+        {% for submission in worm.submissions %}
+            <figure>
+                <img src="">
+                <figcaption></figcaption>
+            </figure>
+        {% endfor %}
+
+        <figure>
+            <img src="{{ asset('placeholder1.png') }}">
+            <figcaption>Truc - 20/02/2015 23:45</figcaption>
+        </figure>
+
+        <figure>
+            <img src="{{ asset('placeholder2.png') }}">
+            <figcaption>Truc - 20/02/2015 23:45</figcaption>
+        </figure>
+
+        <figure>
+            <img src="{{ asset('placeholder3.png') }}">
+            <figcaption>Truc - 20/02/2015 23:45</figcaption>
+        </figure>
+
+        <figure>
+            <img src="{{ asset('placeholder4.png') }}">
+            <figcaption>Truc - 20/02/2015 23:45</figcaption>
+        </figure>
+
+        <figure>
+            <img src="{{ asset('placeholder5.png') }}">
+            <figcaption>Truc - 20/02/2015 23:45</figcaption>
+        </figure>
+    </div>
+{% endblock %}

@@ -41,9 +41,39 @@ class WormController extends Controller
         );
     }
 
+    /**
+     *
+     */
     public function listAction()
     {
 
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function viewAction(Request $request)
+    {
+        $id = $request->get('id');
+
+        if (!$id) {
+            throw $this->createNotFoundException('Worm identifier not provided');
+        }
+
+        $worm = $this->getRepository()->find($id);
+
+        if (!$worm) {
+            throw $this->createNotFoundException('Worm identifier (' . $id . ') is invalid');
+        }
+
+        return $this->render(
+            'WormSiteBundle:Worm:view.html.twig',
+            array(
+                'worm' => $worm
+            )
+        );
     }
 
     /**
