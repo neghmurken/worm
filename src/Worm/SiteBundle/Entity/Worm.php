@@ -132,6 +132,7 @@ class Worm
 
     /**
      * @ORM\OneToMany(targetEntity="Submission", mappedBy="worm")
+     * @ORM\OrderBy({"submittedAt": "DESC"})
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     protected $submissions;

@@ -3,16 +3,6 @@
 {% block container %}
     <h2>{{ worm ? worm.name : 'Créer un vers' }}</h2>
 
-    {% for type, messages in app.session.flashBag.all %}
-        <div class="alert alert-{{ type }}">
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endfor %}
-
     <form method="post"
           action="{{ worm ? path('wormsite_worm_update', {'id': worm.id}) : path('wormsite_worm_create') }}"
           class="well worm-form">
@@ -82,7 +72,7 @@
                     <div class="controls">
                         <div class="input-append">
                             {{ form_widget(form.timeLimit, {'attr': {'class': 'input-mini' }}) }}
-                            <span class="add-on">jours</span>
+                            <span class="add-on">days</span>
                         </div>
                         {{ form_errors(form.timeLimit) }}
                     </div>
@@ -103,9 +93,15 @@
 
         <div class="submit">
             {{ form_widget(form._token) }}
+            {% if worm %}
+                <a href="{{ path('wormsite_worm_view', {'id': worm.id}) }}" class="btn">
+                    <i class="icon-chevron-left"></i>
+                    Cancel
+                </a>
+            {% endif %}
             <button type="submit" class="btn btn-primary">
                 <i class="icon-ok icon-white"></i>
-                Enregister
+                Save
             </button>
         </div>
 

@@ -3,10 +3,13 @@
 namespace Worm\SiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Worm\SiteBundle\Entity\Repository\SubmissionRepository")
  * @ORM\Table(name="ws_submission")
+ * @Assert\Callback(methods={"checkDimensions"})
  */
 class Submission
 {
@@ -57,7 +60,7 @@ class Submission
     /**
      * @ORM\ManyToOne(targetEntity="Worm", inversedBy="submissions")
      * @ORM\JoinColumn(name="worm_id", referencedColumnName="id", onDelete="CASCADE")
-     * @var
+     * @var Worm
      */
     protected $worm;
 
@@ -67,6 +70,26 @@ class Submission
     public function __construct()
     {
         $this->submittedAt = new \DateTime();
+    }
+
+    /**
+     * @param ExecutionContextInterface $context
+     */
+    public function checkDimensions(ExecutionContextInterface $context)
+    {
+        if ($this->width !== $this->worm->getWidth()) {
+            $context->addViolationAt(
+                'width',
+                'The image width should be ' . $this->worm->getWidth() . ' pixels'
+            );
+        }
+
+        if ($this->height !== $this->worm->getHeight()) {
+            $context->addViolationAt(
+                'height',
+                'The image height should be ' . $this->worm->getHeight() . ' pixels'
+            );
+        }
     }
 
     /**
@@ -155,7 +178,8 @@ class Submission
      */
     public function getFilename()
     {
-        return sprintf('%s.%s',
+        return sprintf(
+            '%s.%s',
             $this->getHash(),
             $this->getExtension()
         );

@@ -53,7 +53,7 @@ class Subscription
     /**
      * @param \Worm\SiteBundle\Entity\Worm $worm
      */
-    public function setWorm(Worm $worm)
+    public function setWorm(Worm $worm = null)
     {
         $this->worm = $worm;
     }
@@ -114,5 +114,14 @@ class Subscription
         return $this->user;
     }
 
+    /**
+     * @return \DateTime
+     */
+    public function getEstimatedDueDate()
+    {
+        $date = clone $this->getQueuedAt();
+        $date->add(new \DateInterval('PT'.$this->worm->getTimeLimit().'M'));
 
+        return $date;
+    }
 }

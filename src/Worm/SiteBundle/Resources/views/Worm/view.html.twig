@@ -3,12 +3,12 @@
 {% block info %}
     <div class="worm-info">
         <a href="{{ path('wormsite_worm_list') }}" class="action-list"><i class="icon-chevron-left"></i></a>
-        <strong>{{ worm.name }}</strong> - par {{ worm.author.username }} le {{ worm.createdAt|date('d/m/Y H:i') }}
+        <strong>{{ worm.name }}</strong> - by {{ worm.author.username }} at {{ worm.createdAt|date('d/m/Y H:i') }}
         - {{ worm.description }}
         {% if worm.author == app.user %}
             <a href="{{ path('wormsite_worm_edit', {'id': worm.id}) }}" class="btn btn-small action-edit">
                 <i class="icon-pencil"></i>
-                Modifier
+                Edit
             </a>
         {% endif %}
     </div>
@@ -20,36 +20,32 @@
 
 {% block container %}
     <div class="worm">
-        {% for submission in worm.submissions %}
-            <figure>
-                <img src="">
-                <figcaption></figcaption>
-            </figure>
-        {% endfor %}
+        {% spaceless %}
+            {% for submission in worm.submissions %}
+                <figure>
+                    <img src="{{ asset(im.imageUrl(submission)) }}">
+                    <figcaption>
+                        #{{ loop.index }} &ndash; {{ submission.author.username }}
+                        <span class="date">{{ submission.submittedAt|date('d/m/Y H:i') }}</span>
+                    </figcaption>
+                </figure>
+            {% endfor %}
 
-        <figure>
-            <img src="{{ asset('placeholder1.png') }}">
-            <figcaption>Truc - 20/02/2015 23:45</figcaption>
-        </figure>
+            {% set total = worm.submissions|length %}
 
-        <figure>
-            <img src="{{ asset('placeholder2.png') }}">
-            <figcaption>Truc - 20/02/2015 23:45</figcaption>
-        </figure>
-
-        <figure>
-            <img src="{{ asset('placeholder3.png') }}">
-            <figcaption>Truc - 20/02/2015 23:45</figcaption>
-        </figure>
-
-        <figure>
-            <img src="{{ asset('placeholder4.png') }}">
-            <figcaption>Truc - 20/02/2015 23:45</figcaption>
-        </figure>
-
-        <figure>
-            <img src="{{ asset('placeholder5.png') }}">
-            <figcaption>Truc - 20/02/2015 23:45</figcaption>
-        </figure>
+            {% for subscription in worm.subscriptions %}
+                <figure class="queue">
+                    <div class="placeholder" style="height: {{ worm.height }}px; width: {{ worm.width }}px">
+                        {% if loop.first and app.user == subscription.user %}
+                            {% include 'WormSiteBundle:Worm:_submit.html.twig' with {'worm': worm} %}
+                        {% endif %}
+                    </div>
+                    <figcaption>
+                        #{{ total + loop.index }} {{ subscription.user.username }}
+                        <span>Deadline : {{ subscription.estimatedDueDate|date('d/m/Y H:i') }}</span>
+                    </figcaption>
+                </figure>
+            {% endfor %}
+        {% endspaceless %}
     </div>
 {% endblock %}

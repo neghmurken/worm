@@ -20,7 +20,7 @@ class WormType extends AbstractType
         $isNew = !$builder->getData()->getId();
 
         $builder->add('name', 'text', array(
-            'label' => 'Titre',
+            'label' => 'Title',
             'required' => false
         ));
 
@@ -39,25 +39,25 @@ class WormType extends AbstractType
         ));
 
         $builder->add('width', 'integer', array(
-            'label' => 'Largeur',
+            'label' => 'Width',
             'required' => false,
             'disabled' => !$isNew && $builder->getData()->getMode() === Worm::MODE_VERTICAL
         ));
 
         $builder->add('height', 'integer', array(
-            'label' => 'Hauteur',
+            'label' => 'Height',
             'required' => false,
             'disabled' => !$isNew && $builder->getData()->getMode() === Worm::MODE_HORIZONTAL
         ));
 
         $builder->add('uniqueQueue', 'checkbox', array(
-            'label' => 'Ne pas autoriser plus d\'une fois le même participant dans la file d\'attente',
+            'label' => 'Do not allow the same participant more than once in the queue',
             'required' => false
         ));
 
         $builder->add(
             $builder->create('timeLimit', 'number', array(
-                'label' => 'Temps imparti maximum',
+                'label' => 'Maximum time allowed',
                 'required' => true
             ))
             ->addModelTransformer(new TimeLimitTransformer())

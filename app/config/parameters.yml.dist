@@ -14,4 +14,3 @@ parameters:
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    queue_root_path: %kernel.root_dir%/data/queue

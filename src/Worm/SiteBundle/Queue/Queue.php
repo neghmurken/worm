@@ -3,6 +3,7 @@
 namespace Worm\SiteBundle\Queue;
 
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Worm\SiteBundle\Entity\Submission;
 use Worm\SiteBundle\Entity\Subscription;
 use Worm\SiteBundle\Entity\User;
 use Worm\SiteBundle\Entity\Worm;
@@ -80,7 +81,14 @@ class Queue
      */
     public function next()
     {
-        $this->worm->removeSubscription($this->getCurrent());
+        $current = $this->getCurrent();
+        $this->worm->removeSubscription($current);
+
+        $submission = new Submission();
+        $submission->setAuthor($current->getUser());
+        $submission->setWorm($this->worm);
+
+        return $submission;
     }
 
     /**

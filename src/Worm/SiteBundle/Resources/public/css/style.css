@@ -26,6 +26,8 @@ header .navbar-inner {
     line-height: 32px;
     padding-right: 20px;
     border-bottom: 1px solid #ddd;
+    box-shadow: inset 0 -4px 18px -5px rgba(0, 0, 0, 0.25);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
 }
 .worm-info .action-list {
     display: block;
@@ -53,8 +55,35 @@ header .navbar-inner {
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
+    padding-bottom: 2em;
 }
 .horizontal .worm figure {
+    position: relative;
     display: inline-block;
     margin: 0;
+}
+.horizontal .worm figure .placeholder {
+    margin: 0;
+    box-sizing: border-box;
+    border: 1rem solid #eeeeee;
+}
+.horizontal .worm figcaption {
+    position: absolute;
+    color: white;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    text-align: center;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 40px;
+    display: none;
+}
+.horizontal .worm figcaption span {
+    display: block;
+    font-size: 0.8em;
+    font-style: italic;
+}
+.horizontal .worm figure:hover figcaption {
+    display: block;
 }

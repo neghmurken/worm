@@ -4,8 +4,13 @@ namespace Worm\SiteBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\Form\Tests\Extension\Core\Type\SubmitTypeTest;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Worm\SiteBundle\Entity\Submission;
 use Worm\SiteBundle\Entity\Worm;
+use Worm\SiteBundle\Exception\InvalidImageException;
 use Worm\SiteBundle\Form\Type\WormType;
 
 class WormController extends Controller
@@ -27,6 +32,28 @@ class WormController extends Controller
         return $this
             ->getEntityManager()
             ->getRepository('WormSiteBundle:Worm');
+    }
+
+    /**
+     * @param Request $request
+     * @return Worm
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    protected function getWorm(Request $request)
+    {
+        $id = $request->get('id');
+
+        if (!$id) {
+            throw $this->createNotFoundException('Worm identifier not provided');
+        }
+
+        $worm = $this->getRepository()->find($id);
+
+        if (!$worm) {
+            throw $this->createNotFoundException('Worm identifier (' . $id . ') is invalid');
+        }
+
+        return $worm;
     }
 
     /**
@@ -56,22 +83,11 @@ class WormController extends Controller
      */
     public function viewAction(Request $request)
     {
-        $id = $request->get('id');
-
-        if (!$id) {
-            throw $this->createNotFoundException('Worm identifier not provided');
-        }
-
-        $worm = $this->getRepository()->find($id);
-
-        if (!$worm) {
-            throw $this->createNotFoundException('Worm identifier (' . $id . ') is invalid');
-        }
-
         return $this->render(
             'WormSiteBundle:Worm:view.html.twig',
             array(
-                'worm' => $worm
+                'worm' => $this->getWorm($request),
+                'im' => $this->get('worm_site.image_manager')
             )
         );
     }
@@ -107,7 +123,7 @@ class WormController extends Controller
             $form->handleRequest($request);
 
             if (!$form->isValid()) {
-                throw new Exception('Données invalides. Vérifier votre saisie');
+                throw new Exception('Invalid data. Check your input');
             }
 
             $em->persist($worm);
@@ -116,7 +132,7 @@ class WormController extends Controller
             $worm->getQueue()->subscribe($this->getUser());
             $em->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'Vers créé avec succès');
+            $this->get('session')->getFlashBag()->add('success', 'Worm successfully created');
 
             return $this->redirect($this->generateUrl('wormsite_worm_view', array('id' => $worm->getId())));
         } catch (\Exception $e) {
@@ -135,20 +151,14 @@ class WormController extends Controller
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
      */
     public function editAction(Request $request)
     {
-        $id = $request->get('id');
+        $worm = $this->getWorm($request);
 
-        if (!$id) {
-            throw $this->createNotFoundException('Worm identifier not provided');
-        }
-
-        $worm = $this->getRepository()->find($id);
-
-        if (!$worm) {
-            throw $this->createNotFoundException('Worm identifier (' . $id . ') is invalid');
+        if ($worm->getAuthor()->getId() !== $this->getUser()->getId()) {
+            throw new AccessDeniedHttpException();
         }
 
         return $this->render(
@@ -163,34 +173,27 @@ class WormController extends Controller
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
      */
     public function updateAction(Request $request)
     {
-        $id = $request->get('id');
-
-        if (!$id) {
-            throw $this->createNotFoundException('Worm identifier not provided');
-        }
-
-        $worm = $this->getRepository()->find($id);
-
-        if (!$worm) {
-            throw $this->createNotFoundException('Worm identifier (' . $id . ') is invalid');
-        }
-
+        $worm = $this->getWorm($request);
         $form = $this->getForm($worm);
+
+        if ($worm->getAuthor()->getId() !== $this->getUser()->getId()) {
+            throw new AccessDeniedHttpException();
+        }
 
         try {
             $form->handleRequest($request);
 
             if (!$form->isValid()) {
-                throw new Exception('Données invalides. Vérifier votre saisie');
+                throw new Exception('Invalid data. Check your input');
             }
 
             $this->getEntityManager()->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'Vers modifié avec succès');
+            $this->get('session')->getFlashBag()->add('success', 'Worm successfully updated');
 
             return $this->redirect($this->generateUrl('wormsite_worm_view', array('id' => $worm->getId())));
         } catch (\Exception $e) {
@@ -204,6 +207,43 @@ class WormController extends Controller
                 'worm' => $worm
             )
         );
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
+     */
+    public function submitAction(Request $request)
+    {
+        $flashbag = $this->get('session')->getFlashBag();
+
+        $worm = $this->getWorm($request);
+        $queue = $worm->getQueue();
+
+        if ($queue->getCurrent() && $queue->getCurrent()->getUser()->getId() !== $this->getUser()->getId()) {
+            throw new AccessDeniedHttpException('It\'s not your turn');
+        }
+
+        $im = $this->get('worm_site.image_manager');
+        $em = $this->getEntityManager();
+
+        try {
+
+            $submission = $queue->next();
+            $im->register($request->files->get('image'), $submission);
+
+            $em->persist($submission);
+            $em->flush();
+
+            $flashbag->add('success', 'Submission accepted!');
+        } catch (InvalidImageException $e) {
+            $flashbag->add('error', 'Invalid image');
+        } catch (\Exception $e) {
+            $flashbag->add('error', $e->getMessage());
+        }
+
+        return $this->redirect($this->generateUrl('wormsite_worm_view', array('id' => $worm->getId())));
     }
 
 }

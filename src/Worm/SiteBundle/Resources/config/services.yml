@@ -1,3 +1,11 @@
 parameters:
+    worm_site.image.root_path: %kernel.root_dir%/../web/upload/
+    worm_site.image.web_path: /upload/
 
 services:
+    worm_site.image_manager:
+        class: Worm\SiteBundle\Image\ImageManager
+        arguments:
+            - @validator
+            - %worm_site.image.root_path%
+            - %worm_site.image.web_path%
