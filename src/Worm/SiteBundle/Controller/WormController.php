@@ -4,11 +4,8 @@ namespace Worm\SiteBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
-use Symfony\Component\Form\Tests\Extension\Core\Type\SubmitTypeTest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
-use Worm\SiteBundle\Entity\Submission;
 use Worm\SiteBundle\Entity\Worm;
 use Worm\SiteBundle\Exception\InvalidImageException;
 use Worm\SiteBundle\Form\Type\WormType;
@@ -238,7 +235,7 @@ class WormController extends Controller
 
             $flashbag->add('success', 'Submission accepted!');
         } catch (InvalidImageException $e) {
-            $flashbag->add('error', 'Invalid image');
+            $flashbag->add('error', 'Invalid image'); // TODO append all errors from violations list
         } catch (\Exception $e) {
             $flashbag->add('error', $e->getMessage());
         }

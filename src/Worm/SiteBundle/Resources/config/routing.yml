@@ -26,3 +26,7 @@ fos_user_change_password:
 wormsite_worm:
     resource: "@WormSiteBundle/Resources/config/routing/worm.yml"
     prefix: /worms
+
+wormsite_submission:
+    resource: "@WormSiteBundle/Resources/config/routing/submission.yml"
+    prefix: /submission

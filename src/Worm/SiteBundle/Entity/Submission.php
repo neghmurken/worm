@@ -246,5 +246,25 @@ class Submission
         return $this->width;
     }
 
+    /**
+     * @return string
+     */
+    public function getMimeType()
+    {
+        switch ($this->extension) {
+            case 'png':
+                return 'image/png';
+
+            case 'jpg':
+            case 'jpeg':
+                return 'image/jpeg';
+
+            case 'gif':
+                return 'image/gif';
+
+            default:
+                return 'application/octet-stream';
+        }
+    }
 
 }

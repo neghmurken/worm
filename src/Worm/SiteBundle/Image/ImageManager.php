@@ -93,4 +93,20 @@ class ImageManager
         );
     }
 
+    /**
+     * @param Submission $submission
+     * @return string
+     */
+    public function getImagePath(Submission $submission)
+    {
+        return implode(
+            '/',
+            array(
+                rtrim($this->rootPath, '/'),
+                $submission->getWorm()->getId(),
+                $submission->getFilename()
+            )
+        );
+    }
+
 }

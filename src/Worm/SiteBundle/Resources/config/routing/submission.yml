@@ -1,0 +1,6 @@
+wormsite_submission_download:
+    pattern: /{id}/download
+    defaults: { _controller: WormSiteBundle:Submission:download }
+    requirements:
+        _method: GET
+        id: \d+

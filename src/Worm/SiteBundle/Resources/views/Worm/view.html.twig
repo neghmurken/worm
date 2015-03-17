@@ -25,6 +25,7 @@
                 <figure>
                     <img src="{{ asset(im.imageUrl(submission)) }}">
                     <figcaption>
+                        <a href="{{ path('wormsite_submission_download', {'id': submission.id}) }}" class="download btn btn-small" title="Download"><i class="icon-download"></i></a>
                         #{{ loop.index }} &ndash; {{ submission.author.username }}
                         <span class="date">{{ submission.submittedAt|date('d/m/Y H:i') }}</span>
                     </figcaption>
