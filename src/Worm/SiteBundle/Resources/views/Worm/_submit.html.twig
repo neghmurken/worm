@@ -1,4 +1,7 @@
-<form action="{{ path('wormsite_worm_submit', {'id': worm.id}) }}" method="post" enctype="multipart/form-data">
-    <input type="file" name="image" />
-    <button type="submit">Submit</button>
+<form action="{{ path('wormsite_worm_submit', {'id': worm.id}) }}" method="post" class="submit-form" enctype="multipart/form-data">
+    <input type="file" name="image"/>
+    <button type="submit" class="btn btn-primary">
+        <i class="icon-upload icon-white"></i>
+        Submit
+    </button>
 </form>

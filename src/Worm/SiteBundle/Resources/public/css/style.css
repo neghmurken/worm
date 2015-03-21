@@ -73,6 +73,20 @@ header .navbar-inner {
     box-sizing: border-box;
     border: 1rem solid #eeeeee;
 }
+.horizontal .worm figure .placeholder .submit-form {
+    box-sizing: border-box;
+    padding-top: 4em;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    text-align: center;
+}
+.horizontal .worm figure .placeholder .submit-form button {
+    display: inline-block;
+}
+.horizontal .worm figure .placeholder .submit-form button + button {
+    margin-left: 1em;
+}
 .horizontal .worm figcaption {
     position: absolute;
     color: white;

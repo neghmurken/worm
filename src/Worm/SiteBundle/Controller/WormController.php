@@ -226,7 +226,6 @@ class WormController extends Controller
         $em = $this->getEntityManager();
 
         try {
-
             $submission = $queue->next();
             $im->register($request->files->get('image'), $submission);
 
@@ -235,7 +234,10 @@ class WormController extends Controller
 
             $flashbag->add('success', 'Submission accepted!');
         } catch (InvalidImageException $e) {
-            $flashbag->add('error', 'Invalid image'); // TODO append all errors from violations list
+            $flashbag->add(
+                'error',
+                'Invalid image. ' . $e->getMessage()
+            ); // TODO append all errors from violations list
         } catch (\Exception $e) {
             $flashbag->add('error', $e->getMessage());
         }

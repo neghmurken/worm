@@ -8,5 +8,23 @@
             }
         });
 
+        $('.submit-form').each(function () {
+            var $form = $(this),
+                $fileInput = $form.find('[type=file]'),
+                $button = $('<button type="button" class="btn"><i class="icon-file"></i><span class="text">Choose file</span></button>');
+
+            $fileInput.hide();
+            $fileInput.after($button);
+
+            $button.bind('click', function (e) {
+                $fileInput.trigger('click');
+            });
+
+            $fileInput.bind('change', function (e) {
+                var filename = this.value.split(/(\\|\/)/);
+                $button.find('.text').text(filename[filename.length - 1]);
+            });
+        });
+
     });
 })(jQuery);

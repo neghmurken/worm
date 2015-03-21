@@ -35,9 +35,13 @@ class ImageManager
      * @throws InvalidImageException
      * @throws \Exception
      */
-    public function register(UploadedFile $file, Submission $submission)
+    public function register(UploadedFile $file = null, Submission $submission)
     {
         $fs = new Filesystem();
+
+        if (null === $file) {
+            throw new InvalidImageException('No file was uploaded');
+        }
 
         if (!$file->isValid()) {
             throw new InvalidImageException('Uploaded file is invalid. Error no. ' . $file->getError());
