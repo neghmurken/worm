@@ -243,4 +243,24 @@ class WormController extends Controller
         return $this->redirect($this->generateUrl('wormsite_worm_view', array('id' => $worm->getId())));
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function subscribeAction(Request $request)
+    {
+        $worm = $this->getWorm($request);
+
+        try {
+            $worm->getQueue()->subscribe($this->getUser());
+            $this->getEntityManager()->flush();
+
+            $this->get('session')->getFlashBag()->add('success', 'Subscription successfully created');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+        }
+
+        return $this->redirect($this->generateUrl('wormsite_worm_view', array('id' => $worm->getId())));
+    }
+
 }

@@ -11,6 +11,15 @@
                 Edit
             </a>
         {% endif %}
+
+        {% if is_granted('ROLE_USER') and worm.queue.canRegister(app.user) %}
+            <form method="post" action="{{ path('wormsite_worm_subscribe', {'id': worm.id}) }}" class="action-subscribe">
+                <button type="submit" class="btn btn-small">
+                    <i class="icon-leaf"></i>
+                    Subscribe
+                </button>
+            </form>
+        {% endif %}
     </div>
 {% endblock %}
 

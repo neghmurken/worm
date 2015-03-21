@@ -44,6 +44,11 @@ header .navbar-inner {
 .worm-info .action-edit {
     float: right;
     margin-top: 3px;
+    margin-left: 1em;
+}
+.worm-info .action-subscribe {
+    float: right;
+    margin: -4px 0 0 0;
 }
 
 .container.horizontal {
@@ -61,6 +66,7 @@ header .navbar-inner {
     position: relative;
     display: inline-block;
     margin: 0;
+    vertical-align: top;
 }
 .horizontal .worm figure .placeholder {
     margin: 0;

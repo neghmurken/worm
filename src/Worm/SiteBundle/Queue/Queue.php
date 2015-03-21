@@ -32,7 +32,7 @@ class Queue
      */
     public function subscribe(User $user)
     {
-        if ($this->worm->getUniqueQueue() && $this->isRegistered($user)) {
+        if (!$this->canRegister($user)) {
             throw new \Exception('User "' . $user->getUsername(
             ) . '" has already subscribed. This worm does not allow multiple subscriptions for one user');
         }
@@ -106,10 +106,19 @@ class Queue
     protected function isRegistered(User $user)
     {
         return $this->worm->getSubscriptions()->exists(
-            function ($subscription) use ($user) {
+            function ($key, $subscription) use ($user) {
                 return $user->getId() == $subscription->getUser()->getId();
             }
         );
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function canRegister(User $user)
+    {
+        return !($this->isRegistered($user) && $this->worm->getUniqueQueue());
     }
 
     /**

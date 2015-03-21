@@ -43,3 +43,10 @@ wormsite_worm_submit:
     requirements:
         _method: POST
         id: \d+
+
+wormsite_worm_subscribe:
+    pattern: /{id}/subscribe
+    defaults: { _controller: WormSiteBundle:Worm:subscribe }
+    requirements:
+        _method: POST
+        id: \d+
