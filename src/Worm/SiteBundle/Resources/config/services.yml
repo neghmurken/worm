@@ -9,3 +9,10 @@ services:
             - @validator
             - %worm_site.image.root_path%
             - %worm_site.image.web_path%
+
+    security.access.worm_voter:
+        class: Worm\SiteBundle\Security\Voter\WormVoter
+        arguments: [@security.role_hierarchy]
+        public: false
+        tags:
+            - {name: security.voter}

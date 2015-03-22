@@ -76,14 +76,20 @@ class WormController extends Controller
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
      */
     public function viewAction(Request $request)
     {
+        $worm = $this->getWorm($request);
+
+        if (!$this->get('security.context')->isGranted('WORM_VIEW', $worm)) {
+            throw new AccessDeniedHttpException;
+        }
+
         return $this->render(
             'WormSiteBundle:Worm:view.html.twig',
             array(
-                'worm' => $this->getWorm($request),
+                'worm' => $worm,
                 'im' => $this->get('worm_site.image_manager')
             )
         );
@@ -91,9 +97,14 @@ class WormController extends Controller
 
     /**
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
      */
     public function newAction()
     {
+        if (!$this->get('security.context')->isGranted('WORM_CREATE')) {
+            throw new AccessDeniedHttpException;
+        }
+
         return $this->render(
             'WormSiteBundle:Worm:form.html.twig',
             array(
@@ -106,9 +117,14 @@ class WormController extends Controller
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
      */
     public function createAction(Request $request)
     {
+        if (!$this->get('security.context')->isGranted('WORM_CREATE')) {
+            throw new AccessDeniedHttpException;
+        }
+
         $em = $this->getEntityManager();
 
         $worm = new Worm();
@@ -154,8 +170,8 @@ class WormController extends Controller
     {
         $worm = $this->getWorm($request);
 
-        if ($worm->getAuthor()->getId() !== $this->getUser()->getId()) {
-            throw new AccessDeniedHttpException();
+        if (!$this->get('security.context')->isGranted('WORM_EDIT', $worm)) {
+            throw new AccessDeniedHttpException;
         }
 
         return $this->render(
@@ -177,8 +193,8 @@ class WormController extends Controller
         $worm = $this->getWorm($request);
         $form = $this->getForm($worm);
 
-        if ($worm->getAuthor()->getId() !== $this->getUser()->getId()) {
-            throw new AccessDeniedHttpException();
+        if (!$this->get('security.context')->isGranted('WORM_EDIT', $worm)) {
+            throw new AccessDeniedHttpException;
         }
 
         try {
@@ -216,11 +232,12 @@ class WormController extends Controller
         $flashbag = $this->get('session')->getFlashBag();
 
         $worm = $this->getWorm($request);
-        $queue = $worm->getQueue();
 
-        if ($queue->getCurrent() && $queue->getCurrent()->getUser()->getId() !== $this->getUser()->getId()) {
-            throw new AccessDeniedHttpException('It\'s not your turn');
+        if (!$this->get('security.context')->isGranted('WORM_SUBMIT', $worm)) {
+            throw new AccessDeniedHttpException;
         }
+
+        $queue = $worm->getQueue();
 
         $im = $this->get('worm_site.image_manager');
         $em = $this->getEntityManager();
@@ -248,10 +265,15 @@ class WormController extends Controller
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
      */
     public function subscribeAction(Request $request)
     {
         $worm = $this->getWorm($request);
+
+        if (!$this->get('security.context')->isGranted('WORM_SUBSCRIBE', $worm)) {
+            throw new AccessDeniedHttpException;
+        }
 
         try {
             $worm->getQueue()->subscribe($this->getUser());

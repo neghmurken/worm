@@ -5,14 +5,14 @@
         <a href="{{ path('wormsite_worm_list') }}" class="action-list"><i class="icon-chevron-left"></i></a>
         <strong>{{ worm.name }}</strong> - by {{ worm.author.username }} at {{ worm.createdAt|date('d/m/Y H:i') }}
         - {{ worm.description }}
-        {% if worm.author == app.user %}
+        {% if is_granted('WORM_EDIT', worm) %}
             <a href="{{ path('wormsite_worm_edit', {'id': worm.id}) }}" class="btn btn-small action-edit">
                 <i class="icon-pencil"></i>
                 Edit
             </a>
         {% endif %}
 
-        {% if is_granted('ROLE_USER') and worm.queue.canRegister(app.user) %}
+        {% if is_granted('WORM_SUBSCRIBE', worm) %}
             <form method="post" action="{{ path('wormsite_worm_subscribe', {'id': worm.id}) }}" class="action-subscribe">
                 <button type="submit" class="btn btn-small">
                     <i class="icon-leaf"></i>

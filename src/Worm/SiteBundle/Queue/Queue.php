@@ -103,7 +103,7 @@ class Queue
      * @param User $user
      * @return bool
      */
-    protected function isRegistered(User $user)
+    public function isRegistered(User $user)
     {
         return $this->worm->getSubscriptions()->exists(
             function ($key, $subscription) use ($user) {
