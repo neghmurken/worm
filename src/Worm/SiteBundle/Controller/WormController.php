@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Worm\SiteBundle\Entity\Worm;
 use Worm\SiteBundle\Exception\InvalidImageException;
 use Worm\SiteBundle\Form\Type\WormType;
+use Worm\SiteBundle\Queue\DueDateResolver;
 
 class WormController extends Controller
 {
@@ -90,7 +91,8 @@ class WormController extends Controller
             'WormSiteBundle:Worm:view.html.twig',
             array(
                 'worm' => $worm,
-                'im' => $this->get('worm_site.image_manager')
+                'im' => $this->get('worm_site.image_manager'),
+                'due_date_resolver' => new DueDateResolver($worm)
             )
         );
     }

@@ -14,6 +14,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Subscription
 {
 
+    const STATE_QUEUED = 1;
+    const STATE_CURRENT = 2;
+    const STATE_COMPLETE = 3;
+    const STATE_WITHDRAWN = 4;
+
     /**
      * @ORM\ManyToOne(targetEntity="Worm", inversedBy="subscriptions")
      * @ORM\JoinColumn(name="worm_id", referencedColumnName="id", onDelete="CASCADE")
@@ -30,6 +35,17 @@ class Subscription
     protected $position;
 
     /**
+     * @ORM\Column(type="datetime", name="queued_at")
+     * @var \DateTime
+     */
+    protected $queuedAt;
+
+    /**
+     * @ORM\Column(type="datetime", name="finished_at", nullable=true)
+     */
+    protected $finishedAt;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="subscriptions")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      * @var User
@@ -37,10 +53,15 @@ class Subscription
     protected $user;
 
     /**
-     * @ORM\Column(type="datetime", name="queued_at")
-     * @var \DateTime
+     * @ORM\Column(type="integer")
      */
-    protected $queuedAt;
+    protected $state;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Submission", inversedBy="subscription")
+     * @ORM\JoinColumn(name="submission_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $submission;
 
     /**
      *
@@ -48,6 +69,7 @@ class Subscription
     public function __construct()
     {
         $this->queuedAt = new \DateTime();
+        $this->state = static::STATE_QUEUED;
     }
 
     /**
@@ -59,27 +81,11 @@ class Subscription
     }
 
     /**
-     * @return \Worm\SiteBundle\Entity\Worm
+     * @return Worm
      */
     public function getWorm()
     {
         return $this->worm;
-    }
-
-    /**
-     * @param int $position
-     */
-    public function setPosition($position)
-    {
-        $this->position = $position;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPosition()
-    {
-        return $this->position;
     }
 
     /**
@@ -115,13 +121,75 @@ class Subscription
     }
 
     /**
-     * @return \DateTime
+     * @param mixed $finishedAt
      */
-    public function getEstimatedDueDate()
+    public function setFinishedAt($finishedAt)
     {
-        $date = clone $this->getQueuedAt();
-        $date->add(new \DateInterval('PT'.$this->worm->getTimeLimit().'M'));
-
-        return $date;
+        $this->finishedAt = $finishedAt;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getFinishedAt()
+    {
+        return $this->finishedAt;
+    }
+
+    /**
+     * @param mixed $state
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param mixed $submission
+     */
+    public function setSubmission(Submission $submission = null)
+    {
+        if (null !== $submission) {
+            $this->submission = $submission;
+            $submission->setSubscription($this);
+        } else {
+            if ($this->submission) {
+                $this->submission->setSubscription(null);
+            }
+            $this->submission = null;
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSubmission()
+    {
+        return $this->submission;
+    }
+
+    /**
+     * @param int $position
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
 }

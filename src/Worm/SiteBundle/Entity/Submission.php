@@ -65,6 +65,12 @@ class Submission
     protected $worm;
 
     /**
+     * @ORM\OneToOne(targetEntity="Subscription", mappedBy="submission")
+     * @var Subscription
+     */
+    protected $subscription;
+
+    /**
      *
      */
     public function __construct()
@@ -265,6 +271,22 @@ class Submission
             default:
                 return 'application/octet-stream';
         }
+    }
+
+    /**
+     * @param \Worm\SiteBundle\Entity\Subscription $subscription
+     */
+    public function setSubscription(Subscription $subscription)
+    {
+        $this->subscription = $subscription;
+    }
+
+    /**
+     * @return \Worm\SiteBundle\Entity\Subscription
+     */
+    public function getSubscription()
+    {
+        return $this->subscription;
     }
 
 }

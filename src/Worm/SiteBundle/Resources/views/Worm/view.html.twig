@@ -44,15 +44,17 @@
             {% set total = worm.submissions|length %}
 
             {% for subscription in worm.subscriptions %}
+                {% set dueDate = due_date_resolver.resolve(subscription) %}
+                {% set current = subscription.state == constant('Worm\\SiteBundle\\Entity\\Subscription::STATE_CURRENT') %}
                 <figure class="queue">
                     <div class="placeholder" style="height: {{ worm.height }}px; width: {{ worm.width }}px">
-                        {% if loop.first and app.user == subscription.user %}
+                        {% if current and app.user == subscription.user %}
                             {% include 'WormSiteBundle:Worm:_submit.html.twig' with {'worm': worm} %}
                         {% endif %}
                     </div>
                     <figcaption>
                         #{{ total + loop.index }} {{ subscription.user.username }}
-                        <span>Deadline : {{ subscription.estimatedDueDate|date('d/m/Y H:i') }}</span>
+                        <span>Deadline {% if not current %}(estimated){% endif %}: {{ dueDate ? dueDate|date('d/m/Y H:i') : 'n/a' }}</span>
                     </figcaption>
                 </figure>
             {% endfor %}

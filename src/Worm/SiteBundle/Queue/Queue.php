@@ -2,7 +2,6 @@
 
 namespace Worm\SiteBundle\Queue;
 
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Worm\SiteBundle\Entity\Submission;
 use Worm\SiteBundle\Entity\Subscription;
 use Worm\SiteBundle\Entity\User;
@@ -46,6 +45,10 @@ class Queue
 
         $this->_max = $nextPosition;
 
+        if ($this->isEmpty()) {
+            $subscription->setState(Subscription::STATE_CURRENT);
+        }
+
         $this->worm->addSubscription($subscription);
     }
 
@@ -55,17 +58,14 @@ class Queue
      */
     public function unsubscribe($position)
     {
-        $atPos = $this->worm->getSubscriptions()->filter(
-            function ($subscription) use ($position) {
-                return $subscription->getPosition() === $position;
-            }
-        );
+        $subscription = $this->findByPosition($position);
 
-        if ($atPos->isEmpty()) {
+        if (false === $subscription) {
             throw new \Exception('No subscription at position ' . $position);
         }
 
-        $this->worm->removeSubscription($atPos->first());
+        $subscription->setState(Subscription::STATE_WITHDRAWN);
+        $subscription->setFinishedAt(new \DateTime());
     }
 
     /**
@@ -73,7 +73,11 @@ class Queue
      */
     public function getCurrent()
     {
-        return $this->worm->getSubscriptions()->first();
+        return $this->worm->getSubscriptions()->filter(
+            function ($subscription) {
+                return $subscription->getState() === Subscription::STATE_CURRENT;
+            }
+        )->first();
     }
 
     /**
@@ -82,11 +86,17 @@ class Queue
     public function next()
     {
         $current = $this->getCurrent();
-        $this->worm->removeSubscription($current);
 
         $submission = new Submission();
         $submission->setAuthor($current->getUser());
         $submission->setWorm($this->worm);
+        $submission->setSubscription($current);
+
+        $current->setState(Subscription::STATE_COMPLETE);
+        $current->setFinishedAt(new \DateTime());
+
+        $next = $this->getNext($current->getPosition());
+        $next->setState(Subscription::STATE_CURRENT);
 
         return $submission;
     }
@@ -137,4 +147,34 @@ class Queue
         return $this->_max;
     }
 
+    /**
+     * @param $position
+     * @return bool|Subscription
+     */
+    public function getNext($position)
+    {
+        return $this->findByPosition($position + 1);
+    }
+
+    /**
+     * @param $position
+     * @return bool|Subscription
+     */
+    public function getPrevious($position)
+    {
+        return $this->findByPosition($position - 1);
+    }
+
+    /**
+     * @param $position
+     * @return Subscription|bool
+     */
+    protected function findByPosition($position)
+    {
+        return $this->worm->getSubscriptions()->filter(
+            function ($subscription) use ($position) {
+                return $subscription->getPosition() === $position;
+            }
+        )->first();
+    }
 }
