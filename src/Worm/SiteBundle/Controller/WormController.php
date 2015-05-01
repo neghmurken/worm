@@ -229,46 +229,6 @@ class WormController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
      */
-    public function submitAction(Request $request)
-    {
-        $flashbag = $this->get('session')->getFlashBag();
-
-        $worm = $this->getWorm($request);
-
-        if (!$this->get('security.context')->isGranted('WORM_SUBMIT', $worm)) {
-            throw new AccessDeniedHttpException;
-        }
-
-        $queue = $worm->getQueue();
-
-        $im = $this->get('worm_site.image_manager');
-        $em = $this->getEntityManager();
-
-        try {
-            $submission = $queue->next();
-            $im->register($request->files->get('image'), $submission);
-
-            $em->persist($submission);
-            $em->flush();
-
-            $flashbag->add('success', 'Submission accepted!');
-        } catch (InvalidImageException $e) {
-            $flashbag->add(
-                'error',
-                'Invalid image. ' . $e->getMessage()
-            ); // TODO append all errors from violations list
-        } catch (\Exception $e) {
-            $flashbag->add('error', $e->getMessage());
-        }
-
-        return $this->redirect($this->generateUrl('wormsite_worm_view', array('id' => $worm->getId())));
-    }
-
-    /**
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
-     */
     public function subscribeAction(Request $request)
     {
         $worm = $this->getWorm($request);

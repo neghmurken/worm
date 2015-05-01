@@ -1,0 +1,15 @@
+wormsite_subscription_submit:
+    pattern: /{pos}/submit
+    defaults: { _controller: WormSiteBundle:Subscription:submit }
+    requirements:
+        _method: POST
+        id: \d+
+        pos: \d+
+
+wormsite_subscription_withdraw:
+    pattern: /{pos}/withdraw
+    defaults: { _controller: WormSiteBundle:Subscription:withdraw }
+    requirements:
+        _method: POST
+        id: \d+
+        pos: \d+

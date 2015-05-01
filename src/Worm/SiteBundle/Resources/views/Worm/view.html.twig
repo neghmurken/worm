@@ -13,7 +13,8 @@
         {% endif %}
 
         {% if is_granted('WORM_SUBSCRIBE', worm) %}
-            <form method="post" action="{{ path('wormsite_worm_subscribe', {'id': worm.id}) }}" class="action-subscribe">
+            <form method="post" action="{{ path('wormsite_worm_subscribe', {'id': worm.id}) }}"
+                  class="action-subscribe">
                 <button type="submit" class="btn btn-small">
                     <i class="icon-leaf"></i>
                     Subscribe
@@ -34,7 +35,8 @@
                 <figure>
                     <img src="{{ asset(im.imageUrl(submission)) }}">
                     <figcaption>
-                        <a href="{{ path('wormsite_submission_download', {'id': submission.id}) }}" class="download btn btn-small" title="Download"><i class="icon-download"></i></a>
+                        <a href="{{ path('wormsite_submission_download', {'id': submission.id}) }}"
+                           class="download btn btn-small" title="Download"><i class="icon-download"></i></a>
                         #{{ loop.index }} &ndash; {{ submission.author.username }}
                         <span class="date">{{ submission.submittedAt|date('d/m/Y H:i') }}</span>
                     </figcaption>
@@ -43,21 +45,29 @@
 
             {% set total = worm.submissions|length %}
 
-            {% for subscription in worm.subscriptions %}
+            {% for subscription in worm.queue.activeSubscriptions %}
                 {% set dueDate = due_date_resolver.resolve(subscription) %}
                 {% set current = subscription.state == constant('Worm\\SiteBundle\\Entity\\Subscription::STATE_CURRENT') %}
                 <figure class="queue">
                     <div class="placeholder" style="height: {{ worm.height }}px; width: {{ worm.width }}px">
-                        {% if current and app.user == subscription.user %}
-                            {% include 'WormSiteBundle:Worm:_submit.html.twig' with {'worm': worm} %}
+                        {% if is_granted('SUBSCRIPTION_SUBMIT', subscription) %}
+                            {% include 'WormSiteBundle:Worm:_submit.html.twig' with {'subscription': subscription} %}
+                        {% endif %}
+                        {% if is_granted('SUBSCRIPTION_WITHDRAW', subscription) %}
+                            {% include 'WormSiteBundle:Worm:_withdraw.html.twig' with {'subscription': subscription} %}
                         {% endif %}
                     </div>
                     <figcaption>
                         #{{ total + loop.index }} {{ subscription.user.username }}
-                        <span>Deadline {% if not current %}(estimated){% endif %}: {{ dueDate ? dueDate|date('d/m/Y H:i') : 'n/a' }}</span>
+                        <span>Deadline {% if not current %}(estimated){% endif %}
+                            : {{ dueDate ? dueDate|date('d/m/Y H:i') : 'n/a' }}</span>
                     </figcaption>
                 </figure>
             {% endfor %}
+
+            {% if worm.submissions|length == 0 and worm.queue.activeSubscriptions|length == 0 %}
+                <p class="empty">There is nothing here.</p>
+            {% endif %}
         {% endspaceless %}
     </div>
 {% endblock %}

@@ -30,3 +30,4 @@ wormsite_worm:
 wormsite_submission:
     resource: "@WormSiteBundle/Resources/config/routing/submission.yml"
     prefix: /submission
+

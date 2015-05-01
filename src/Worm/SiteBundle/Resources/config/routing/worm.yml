@@ -37,16 +37,14 @@ wormsite_worm_update:
         _method: POST
         id: \d+
 
-wormsite_worm_submit:
-    pattern: /{id}/submit
-    defaults: { _controller: WormSiteBundle:Worm:submit }
-    requirements:
-        _method: POST
-        id: \d+
-
 wormsite_worm_subscribe:
     pattern: /{id}/subscribe
     defaults: { _controller: WormSiteBundle:Worm:subscribe }
     requirements:
         _method: POST
         id: \d+
+        position: \d+
+
+wormsite_subscription:
+    resource: "@WormSiteBundle/Resources/config/routing/subscription.yml"
+    prefix: /{id}/subscription

@@ -45,18 +45,20 @@ class Queue
 
         $this->_max = $nextPosition;
 
-        if ($this->isEmpty()) {
+        $this->worm->addSubscription($subscription);
+
+        $previous = $this->getPrevious($nextPosition);
+
+        if (!$previous || $previous->isFinished()) {
             $subscription->setState(Subscription::STATE_CURRENT);
         }
-
-        $this->worm->addSubscription($subscription);
     }
 
     /**
      * @param $position
      * @throws \Exception
      */
-    public function unsubscribe($position)
+    public function withdraw($position)
     {
         $subscription = $this->findByPosition($position);
 
@@ -64,8 +66,17 @@ class Queue
             throw new \Exception('No subscription at position ' . $position);
         }
 
+        $wasCurrent = $subscription->getState() === $subscription::STATE_CURRENT;
+
         $subscription->setState(Subscription::STATE_WITHDRAWN);
         $subscription->setFinishedAt(new \DateTime());
+
+        if ($wasCurrent) {
+            $next = $this->getNext($position);
+            if ($next) {
+                $next->setState($subscription::STATE_CURRENT);
+            }
+        }
     }
 
     /**
@@ -96,7 +107,9 @@ class Queue
         $current->setFinishedAt(new \DateTime());
 
         $next = $this->getNext($current->getPosition());
-        $next->setState(Subscription::STATE_CURRENT);
+        if ($next) {
+            $next->setState(Subscription::STATE_CURRENT);
+        }
 
         return $submission;
     }
@@ -176,5 +189,17 @@ class Queue
                 return $subscription->getPosition() === $position;
             }
         )->first();
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getActiveSubscriptions()
+    {
+        return $this->worm->getSubscriptions()->filter(
+            function ($subscription) {
+                return !$subscription->isFinished();
+            }
+        );
     }
 }

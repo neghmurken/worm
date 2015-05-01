@@ -16,3 +16,10 @@ services:
         public: false
         tags:
             - {name: security.voter}
+
+    security.access.subscription_voter:
+        class: Worm\SiteBundle\Security\Voter\SubscriptionVoter
+        arguments: [@security.role_hierarchy]
+        public: false
+        tags:
+            - {name: security.voter}

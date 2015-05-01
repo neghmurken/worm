@@ -5,17 +5,14 @@ namespace Worm\SiteBundle\Security\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Worm\SiteBundle\Entity\Subscription;
 
-class WormVoter implements VoterInterface
+class SubscriptionVoter implements VoterInterface
 {
 
     public static $permissions = array(
-        'WORM_VIEW',
-        'WORM_CREATE',
-        'WORM_EDIT',
-        'WORM_SUBSCRIBE',
-        'WORM_DELETE'
+        'SUBSCRIPTION_WITHDRAW',
+        'SUBSCRIPTION_SUBMIT'
     );
 
     protected $roleHierarchy;
@@ -49,7 +46,7 @@ class WormVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        $supportedClass = 'Worm\SiteBundle\Entity\Worm';
+        $supportedClass = 'Worm\SiteBundle\Entity\Subscription';
 
         return $class === $supportedClass || is_subclass_of($class, $supportedClass);
     }
@@ -77,34 +74,30 @@ class WormVoter implements VoterInterface
         $user = $token->getUser();
 
         switch ($permission) {
-            case 'WORM_VIEW':
-                return static::ACCESS_GRANTED;
-
-            case 'WORM_CREATE':
-                if ($this->hasRole($token, 'ROLE_USER')) {
-                    return static::ACCESS_GRANTED;
-                }
-
-                return static::ACCESS_DENIED;
-
-            case 'WORM_EDIT':
-            case 'WORM_DELETE':
+            case 'SUBSCRIPTION_WITHDRAW':
                 if (!$this->supportsClass(get_class($object))) {
                     return static::ACCESS_ABSTAIN;
                 }
 
-                if (!$this->hasRole($token, 'ROLE_USER') || $object->getAuthor()->getId() !== $user->getId()) {
+                if (in_array($object->getState(), array(Subscription::STATE_COMPLETE, Subscription::STATE_WITHDRAWN))) {
+                    return static::ACCESS_DENIED;
+                }
+
+                if (!$this->hasRole($token, 'ROLE_USER') || $object->getUser()->getId() !== $user->getId()) {
                     return static::ACCESS_DENIED;
                 }
 
                 return static::ACCESS_GRANTED;
 
-            case 'WORM_SUBSCRIBE':
+            case 'SUBSCRIPTION_SUBMIT':
                 if (!$this->supportsClass(get_class($object))) {
                     return static::ACCESS_ABSTAIN;
                 }
 
-                if (!$this->hasRole($token, 'ROLE_USER') || !$object->getQueue()->canRegister($user)) {
+                if (!$this->hasRole($token, 'ROLE_USER') ||
+                    $object->getState() !== Subscription::STATE_CURRENT ||
+                    $object->getUser()->getId() !== $user->getId()
+                ) {
                     return static::ACCESS_DENIED;
                 }
 

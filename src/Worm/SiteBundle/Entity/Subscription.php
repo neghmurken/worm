@@ -192,4 +192,12 @@ class Subscription
         return $this->position;
     }
 
+    /**
+     * @return bool
+     */
+    public function isFinished()
+    {
+        return in_array($this->getState(), array(static::STATE_WITHDRAWN, static::STATE_COMPLETE));
+    }
+
 }

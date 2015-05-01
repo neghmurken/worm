@@ -46,6 +46,8 @@ class DueDateResolver
 
             case Subscription::STATE_WITHDRAWN:
             case Subscription::STATE_COMPLETE:
+                return $subscription->getFinishedAt();
+
             default:
                 break;
         }
