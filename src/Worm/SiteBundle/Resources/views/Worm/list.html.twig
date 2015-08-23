@@ -1,0 +1,20 @@
+{% extends 'WormSiteBundle::layout.html.twig' %}
+
+{% block container %}
+    {% if worms|length > 0 %}
+        <ul class="worms">
+            {% for worm in worms %}
+                <li>
+                    <a href="{{ path('wormsite_worm_view', {'id': worm.id}) }}">
+                        {% if not worm.submissions.empty %}
+                            <img src="{{ image_manager.imagePath(worm.submissions.first)|imagine_filter('worm_squarethumb') }}" alt="{{ worm.name }}"/>
+                        {% else %}
+                            <img src="" alt="{{ worm.name }}" />
+                        {% endif %}
+                        <span class="name">{{ worm.name }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

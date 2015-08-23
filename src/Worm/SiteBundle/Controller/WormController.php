@@ -67,11 +67,17 @@ class WormController extends Controller
     }
 
     /**
-     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listAction()
     {
-
+        return $this->render(
+            'WormSiteBundle:Worm:list.html.twig',
+            array(
+                'worms' => $this->getRepository()->retrieveAllWorms(),
+                'image_manager' => $this->get('worm_site.image_manager')
+            )
+        );
     }
 
     /**

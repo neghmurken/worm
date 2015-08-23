@@ -3,6 +3,7 @@
 namespace Worm\SiteBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 
 /**
  * WormRepository
@@ -12,4 +13,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class WormRepository extends EntityRepository
 {
+    /**
+     * @return array
+     */
+    public function retrieveAllWorms()
+    {
+        $queryBuilder = $this->createQueryBuilder('w');
+
+        $queryBuilder->orderBy('w.createdAt', 'DESC');
+
+        try {
+            return $queryBuilder
+                ->getQuery()
+                ->getResult();
+        } catch (NoResultException $e) {
+            return array();
+        }
+    }
 }

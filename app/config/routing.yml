@@ -10,5 +10,8 @@ _assetic:
     resource: .
     type:     assetic
 
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+
 wormsite:
     resource: @WormSiteBundle/Resources/config/routing.yml

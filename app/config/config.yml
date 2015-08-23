@@ -38,6 +38,16 @@ assetic:
         #yui_css:
         #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
 
+liip_imagine:
+    loaders:
+        default:
+            filesystem:
+                data_root: /
+    filter_sets:
+        worm_squarethumb:
+            filters:
+                thumbnail: { size: [256, 256], mode: outbound }
+
 # Doctrine Configuration
 doctrine:
     dbal:
