@@ -11,7 +11,7 @@
         $('.submit-form').each(function () {
             var $form = $(this),
                 $fileInput = $form.find('[type=file]'),
-                $button = $('<button type="button" class="btn"><i class="icon-file"></i><span class="text">Choose file</span></button>');
+                $button = $('<button type="button" class="btn"><i class="icon-file icon-white"></i><span class="text">Choose file</span></button>');
 
             $fileInput.hide();
             $fileInput.after($button);

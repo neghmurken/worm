@@ -1,5 +1,6 @@
 <form action="{{ path('wormsite_subscription_submit', {'id': subscription.worm.id, 'pos': subscription.position}) }}" method="post" class="submit-form" enctype="multipart/form-data">
     <input type="file" name="image"/>
+    <span>and</span>
     <button type="submit" class="btn btn-primary">
         <i class="icon-upload icon-white"></i>
         Submit

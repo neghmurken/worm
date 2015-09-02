@@ -1,7 +1,7 @@
 {% extends 'WormSiteBundle::layout.html.twig' %}
 
 {% block container %}
-    <h2>{{ worm ? worm.name : 'Créer un vers' }}</h2>
+    <h2>{{ worm ? worm.name : 'Create new worm' }}</h2>
 
     <form method="post"
           action="{{ worm ? path('wormsite_worm_update', {'id': worm.id}) : path('wormsite_worm_create') }}"
@@ -95,7 +95,7 @@
             {{ form_widget(form._token) }}
             {% if worm %}
                 <a href="{{ path('wormsite_worm_view', {'id': worm.id}) }}" class="btn">
-                    <i class="icon-chevron-left"></i>
+                    <i class="icon-chevron-left icon-white"></i>
                     Cancel
                 </a>
             {% endif %}

@@ -11,7 +11,10 @@
                         {% else %}
                             <img src="" alt="{{ worm.name }}" />
                         {% endif %}
-                        <span class="name">{{ worm.name }}</span>
+                        <span class="name">
+                            <em>{{ worm.name }}</em>
+                            - {{ worm.author.username }}
+                        </span>
                     </a>
                 </li>
             {% endfor %}

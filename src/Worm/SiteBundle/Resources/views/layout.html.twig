@@ -3,6 +3,7 @@
 {% block title %}Worm{% endblock %}
 
 {% block stylesheets %}
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     {% stylesheets filter='cssrewrite'
     'bundles/wormsite/bootstrap/css/bootstrap.min.css'
     'bundles/wormsite/bootstrap/css/bootstrap-responsive.min.css'
@@ -21,7 +22,7 @@
 {% endblock %}
 
 {% block body %}
-    <header class="navbar">
+    <header class="navbar navbar-inverse">
         {% include 'WormSiteBundle:Snippets:_navbar.html.twig' with {'title': block('title')} %}
         {% block info %}{% endblock %}
     </header>

@@ -1,16 +1,164 @@
 * {
     box-sizing: border-box;
 }
+
 html {
     height: 100%;
+    font-size: 14px;
 }
+
 body {
     height: 100%;
+    background-color: #222;
+    color: #DDDDDD;
+    font-family: 'Source Sans Pro', sans-serif;
 }
-header .navbar-inner {
+
+/** ----------------------------------------------------------------------------------------------------------------- */
+/** COMMON
+/** */
+
+h2, h3, h4, h5, h6 {
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
+    color: #1D99C0;
+}
+
+hr {
+    border-top-color: #191919;
+    border-bottom-color: #444444;
+}
+
+.well {
+    background-color: #2A2A2A;
+    border-color: #191919;
+    box-shadow: inset 0 -2px 6px 0px rgba(0, 0, 0, 0.25)
+}
+
+/* ---- BUTTONS --- */
+.btn {
+    font-family: 'Source Sans Pro', sans-serif;
+    background-image: linear-gradient(to bottom, #444444, #333333);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+    color: #DDDDDD;
+    border-color: #191919;
+    box-shadow: none;
+    border-radius: 3px;
+    background-color: transparent;
+}
+.btn:active,
+.btn:hover,
+.btn:focus {
+    background-color: #444444;
+    outline: none;
+    color: #FFFFFF;
+}
+.btn:hover,
+.btn:focus {
+    background-image: linear-gradient(to bottom, #333333, #444444);
+    border-color: #191919;
+    background-position: -0.5rem;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+}
+
+.btn.btn-primary {
+    background-image: linear-gradient(to bottom, #1D99C0, #1c799f);
+}
+.btn.btn-primary:hover,
+.btn.btn-primary:focus {
+    background-image: linear-gradient(to bottom, #1c799f, #1D99C0);
+}
+
+.btn.btn-block {
+    margin-top: 0.5rem;
+}
+
+.btn i {
+    vertical-align: sub;
+    margin-right: 0.25rem;
+}
+
+/* ---- INPUTS --- */
+input[type=text],
+input[type=email],
+input[type=password],
+input[type=number],
+textarea {
+    background-color: #444444;
+    border-color: #222222;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.25);
+    color: #dddddd;
+    min-height: 2rem;
+}
+
+input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly] {
+    color: #777777;
+}
+
+.input-append .add-on {
+    min-height: 2rem;
+    background-color: #444444;
+    border-color: #222222;
+    color: #ddd;
+    box-shadow: inset 0 -2px 3px rgba(0, 0, 0, 0.25);
+    text-shadow: none;
+}
+
+/* ---- DROPDOWNS ---- */
+.dropdown-menu {
+    background-color: #2A2A2A;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.5)
+}
+
+.dropdown-menu li > a {
+    color: #DDDDDD;
+}
+
+.dropdown-menu li > a i {
+    vertical-align: sub;
+    margin-right: 0.5rem;
+}
+
+.dropdown-menu li > a:hover {
+    background-color: #1D99C0;
+}
+
+.navbar .nav > li > .dropdown-menu:after {
+    border-bottom-color: #2A2A2A;
+}
+
+/* ---- ALERTS ---- */
+.alerts {
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    width: 50vw;
+    margin-left: -25vw;
+}
+
+.alert {
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.alert ul {
+    margin: 0;
+    list-style-type: none;
+}
+
+/** ----------------------------------------------------------------------------------------------------------------- */
+/** HEADER
+/** */
+header.navbar .brand {
+    color: #1D99C0;
+}
+
+header.navbar-inner {
     border-radius: 0;
     -moz-border-radius: 0;
     -webkit-border-radius: 0;
+}
+
+.dropdown-toggle i {
+    margin-right: 0.5rem;
 }
 
 #login-form .dropdown-menu {
@@ -21,38 +169,37 @@ header .navbar-inner {
     margin: 10px;
 }
 
-.alerts {
-    position: absolute;
-    top: 1em;
-    left: 50%;
-    width: 50vw;
-    margin-left: -25vw;
-}
-.alert {
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-}
-.alert ul {
-    margin: 0;
-    list-style-type: none;
-}
-
 /** ----------------------------------------------------------------------------------------------------------------- */
 /** WORMS
 /** */
 .worms {
-    overflow: hidden;
     margin: 0;
 }
+
+.worms:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
 .worms li {
     list-style-type: none;
     position: relative;
     float: left;
     margin: 0 1rem 1rem 0;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
 }
+
+.worms li:hover {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
 .worms li a {
     display: block;
     color: white;
 }
+
 .worms li .name {
     position: absolute;
     left: 0;
@@ -61,37 +208,54 @@ header .navbar-inner {
     width: 100%;
     padding: 0.25rem 0.5rem;
     background-color: rgba(0, 0, 0, 0.75);
+    font-style: italic;
+    font-size: 0.9rem;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.7);
+    color: #1D99C0
+}
+
+.worms li .name em {
+    font-size: 1rem;
+    font-style: normal;
+}
+
+.worms li:hover .name {
+    background-color: rgba(0, 0, 0, 0.825);
 }
 
 /** ----------------------------------------------------------------------------------------------------------------- */
 /** WORM
 /** */
 .worm-info {
-    background-color: #eee;
+    background-color: #2A2A2A;
     height: 32px;
     line-height: 32px;
     padding-right: 20px;
-    border-bottom: 1px solid #ddd;
-    box-shadow: inset 0 -4px 18px -5px rgba(0, 0, 0, 0.25);
+    border-bottom: 1px solid #191919;
+    box-shadow: inset 0 -4px 18px -5px rgba(0, 0, 0, 0.5);
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
 }
+
 .worm-info .action-list {
     display: block;
     float: left;
     height: 100%;
     width: 32px;
     text-align: center;
-    border-right: 1px solid #ddd;
-    margin-right: 1em;
+    border-right: 1px solid #191919;
+    margin-right: 1rem;
 }
+
 .worm-info .action-list:hover {
-    background-color: #e8e8e8;
+    background-color: #222222;
 }
+
 .worm-info .action-edit {
     float: right;
     margin-top: 3px;
-    margin-left: 1em;
+    margin-left: 1rem;
 }
+
 .worm-info .action-subscribe {
     float: right;
     margin: -4px 0 0 0;
@@ -100,8 +264,9 @@ header .navbar-inner {
 .container.horizontal {
     margin: 0;
     width: 100%;
-    height: calc(100% - 95px);
+    height: calc(100% - 94px);
 }
+
 .horizontal .worm {
     width: 100%;
     height: 100%;
@@ -109,66 +274,86 @@ header .navbar-inner {
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
-    padding-bottom: 2em;
 }
+
+.horizontal .worm-wrapper {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
 .horizontal .worm .empty {
     text-align: center;
     font-style: italic;
 }
+
 .horizontal .worm figure {
     position: relative;
     display: inline-block;
     margin: 0;
     vertical-align: top;
 }
+
 .horizontal .worm figure .placeholder {
     margin: 0;
     box-sizing: border-box;
-    border: 1rem solid #eeeeee;
+    border: 0.5rem solid #191919;
+    box-shadow: inset 0 0 2rem #191919;
 }
+
 .horizontal .worm figure .placeholder .submit-form,
 .horizontal .worm figure .placeholder .withdraw-form {
     box-sizing: border-box;
-    padding-top: 4em;
+    padding-top: 4rem;
     width: 100%;
     margin: 0;
     text-align: center;
 }
+
 .horizontal .worm figure .placeholder .withdraw-form {
-    padding-top: 10em;
+    padding-top: 10rem;
 }
+
 .horizontal .worm figure .placeholder .submit-form + .withdraw-form {
-    padding-top: 4em;
+    padding-top: 4rem;
 }
+
 .horizontal .worm figure .placeholder .submit-form button,
 .horizontal .worm figure .placeholder .withdraw-form button {
     display: inline-block;
 }
-.horizontal .worm figure .placeholder .submit-form button + button {
-    margin-left: 1em;
+
+.horizontal .worm figure .placeholder .submit-form button + span {
+    margin: 0 1rem;
 }
+
 .horizontal .worm figcaption {
     position: absolute;
     color: white;
-    top: 0;
+    bottom: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: rgba(0, 0, 0, 0.825);
     text-align: center;
     box-sizing: border-box;
     width: 100%;
     min-height: 40px;
     display: none;
 }
+
 .horizontal .worm figcaption .download {
     float: right;
-    margin-right: 0.75em;
-    margin-top: 0.55em;
+    margin-right: 0.75rem;
+    margin-top: 0.55rem;
 }
+
 .horizontal .worm figcaption span {
     display: block;
-    font-size: 0.8em;
+    font-size: 0.8rem;
     font-style: italic;
 }
+
 .horizontal .worm figure:hover figcaption {
     display: block;
+}
+.horizontal .worm figure:hover {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+    z-index: 2;
 }
