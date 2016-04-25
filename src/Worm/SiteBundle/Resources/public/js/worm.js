@@ -26,5 +26,11 @@
             });
         });
 
+        $('.danger-form').bind('submit', function (e) {
+            if (!confirm('Are you sure ?')) {
+                e.preventDefault();
+            }
+        });
+
     });
 })(jQuery);
