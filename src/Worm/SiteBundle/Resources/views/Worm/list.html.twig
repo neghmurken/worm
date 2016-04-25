@@ -7,7 +7,7 @@
                 <li>
                     <a href="{{ path('wormsite_worm_view', {'id': worm.id}) }}">
                         {% if not worm.submissions.empty %}
-                            <img src="{{ image_manager.imagePath(worm.submissions.first)|imagine_filter('worm_squarethumb') }}" alt="{{ worm.name }}"/>
+                            <img src="{{ image_manager.imageUrl(worm.submissions.first)|imagine_filter('worm_squarethumb') }}" alt="{{ worm.name }}"/>
                         {% else %}
                             <img src="" alt="{{ worm.name }}" />
                         {% endif %}

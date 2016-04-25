@@ -39,10 +39,15 @@ assetic:
         #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
 
 liip_imagine:
+    resolvers:
+        default:
+            web_path:
+                web_root: %kernel.root_dir%/../web
+                cache_prefix: /upload/cache
     loaders:
         default:
             filesystem:
-                data_root: /
+                data_root: %kernel.root_dir%/../web
     filter_sets:
         worm_squarethumb:
             filters:
